@@ -2,6 +2,7 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Nuestro Espacio Privado</title>
     <!-- Importamos las fuentes Oswald, Viga, Ubuntu e Indie Flower desde Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;600&family=Viga&family=Ubuntu:wght@400;500&family=Indie+Flower&display=swap" rel="stylesheet">
@@ -420,6 +421,131 @@
             bottom: 20px;
             left: 20px;
             width: 220px;
+        }
+
+        /* ============================================= */
+        /* AJUSTES PARA CELULAR: apila todo en una columna */
+        /* en vez de usar posiciones fijas que se encimaban */
+        /* ============================================= */
+        @media (max-width: 820px) {
+
+            body {
+                height: auto;
+                min-height: 100vh;
+                display: flex;
+                flex-direction: column;
+                justify-content: flex-start;
+                align-items: center;
+                overflow-y: auto;
+                overflow-x: hidden;
+                padding: 30px 0 60px 0;
+            }
+
+            /* El título pasa a flujo normal, centrado y más chico */
+            #titulo-princesa {
+                position: static;
+                transform: none;
+                width: 90%;
+                font-size: 44px;
+                text-align: center;
+                white-space: normal;
+                margin: 0 0 20px 0;
+                order: 2;
+            }
+
+            /* El bloque de mensaje pasa a flujo normal, ancho 90% */
+            #bloque-mensaje {
+                position: static;
+                left: auto;
+                right: auto;
+                top: auto;
+                width: 90%;
+                margin: 0 0 25px 0;
+                order: 3;
+            }
+
+            #mensaje-princesa {
+                font-size: 16px;
+                text-align: left;
+            }
+
+            /* gato4 e imagen se apilan (imagen arriba, texto abajo) en vez de ir lado a lado */
+            #fila-gato4 {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+                gap: 15px;
+            }
+
+            #gato4-imagen {
+                width: 55%;
+                max-width: 220px;
+            }
+
+            #texto-gato4 {
+                font-size: 16px;
+                text-align: center;
+            }
+
+            /* La imagen amorgatos.png pasa a flujo normal, centrada, sin encimarse con el texto */
+            #contenido-secreto {
+                position: static;
+                left: auto;
+                top: auto;
+                transform: none;
+                width: 85%;
+                margin: 0 0 25px 0;
+                order: 4;
+            }
+
+            #contenido-secreto img {
+                width: 100%;
+            }
+
+            /* Flechitas más chicas y ancladas a la pantalla (quedan flotando aunque haya scroll) */
+            .flecha-nav {
+                font-size: 34px;
+                bottom: 15px;
+            }
+
+            #flecha-siguiente {
+                right: 20px;
+                order: 5;
+            }
+
+            /* Cara 3 en celular: tarjeta de flores y gato informático apilados, ancho 90% */
+            #tarjeta-flores {
+                position: static;
+                left: auto;
+                top: auto;
+                transform: none;
+                width: 88%;
+                margin: 0 0 25px 0;
+            }
+
+            #bloque-gato-info {
+                position: static;
+                right: auto;
+                top: auto;
+                width: 88%;
+                margin: 0 0 25px 0;
+            }
+
+            #texto-gato-info {
+                font-size: 16px;
+            }
+
+            /* Caja de login: que no se pegue a los bordes */
+            #login-box {
+                width: 85%;
+                box-sizing: border-box;
+            }
+
+            .login-wrapper {
+                width: 100%;
+                display: flex;
+                justify-content: center;
+            }
         }
     </style>
 </head>
