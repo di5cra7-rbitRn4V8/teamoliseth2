@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Nuestro Espacio Privado</title>
+    <!-- Importamos las fuentes Oswald, Viga, Ubuntu e Indie Flower desde Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;600&family=Viga&family=Ubuntu:wght@400;500&family=Indie+Flower&display=swap" rel="stylesheet">
+    
+    <style>
+        /* Animación de entrada suave con rebote */
+        @keyframes aparecerConRebote {
+            0% {
+                opacity: 0;
+                transform: translateY(40px) scale(0.95);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        /* Animación para los elementos laterales y esquinas */
+        @keyframes aparecerLateral {
+            0% {
+                opacity: 0;
+                transform: scale(0.8);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        /* Animación suave para la imagen secreta */
+        @keyframes aparecerSecreto {
+            0% {
+                opacity: 0;
+                transform: translate(-50%, -50%) scale(0.95);
+            }
+            100% {
+                opacity: 1;
+                transform: translate(-50%, -50%) scale(1);
+            }
+        }
+
+        /* Animación suave para el mensaje y la fila de gato4 */
+        @keyframes aparecerMensaje {
+            0% {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Animación de entrada para la tarjeta de flores */
+        @keyframes aparecerFlores {
+            0% {
+                opacity: 0;
+                transform: translateY(-50%) scale(0.9);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(-50%) scale(1);
+            }
+        }
+
+        /* Animación de entrada para el gato informático */
+        @keyframes aparecerGatoInfo {
+            0% {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Estilos generales de la página con la fuente Oswald y puntos blancos pequeños */
+        body {
+            background-color: #ffe6f0;
+            color: #333333;
+            font-family: 'Oswald', sans-serif;
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+            
+            /* Puntos blancos pequeños y discretos */
+            background-image: 
+                radial-gradient(circle, white 4px, transparent 5px),
+                radial-gradient(circle, white 3px, transparent 4px),
+                radial-gradient(circle, white 5px, transparent 6px),
+                radial-gradient(circle, white 3px, transparent 4px),
+                radial-gradient(circle, white 4px, transparent 5px);
+            background-size: 
+                220px 220px, 
+                180px 180px, 
+                280px 280px, 
+                150px 150px, 
+                250px 250px;
+            background-position: 
+                30px 40px, 
+                120px 180px, 
+                250px 80px, 
+                80px 280px, 
+                200px 220px;
+            background-repeat: repeat;
+        }
+
+        /* Título "Mi Princesa": OCULTO hasta poner la contraseña correcta */
+        #titulo-princesa {
+            display: none;
+            position: fixed;
+            top: 40px;
+            left: 55%;
+            transform: translateX(-50%);
+            font-family: 'Viga', sans-serif;
+            font-size: 90px;
+            color: #ffffff;
+            z-index: 20;
+            text-shadow: 
+                3px 3px 0 #d11a42,
+                6px 6px 12px rgba(0, 0, 0, 0.5),
+                0 0 30px rgba(210, 26, 66, 0.6);
+            animation: aparecerLateral 1.2s ease-out forwards;
+            white-space: nowrap;
+        }
+
+        /* Contenedor del mensaje + fila gato4: OCULTO hasta poner la contraseña */
+        #bloque-mensaje {
+            display: none;
+            position: fixed;
+            top: 190px;
+            left: 46%;
+            right: 4%;
+            z-index: 20;
+            animation: aparecerMensaje 1s ease-out forwards;
+        }
+
+        /* Texto del mensaje principal, fuente Ubuntu */
+        #mensaje-princesa {
+            font-family: 'Ubuntu', sans-serif;
+            font-size: 21px;
+            line-height: 1.7;
+            color: #4a1020;
+            text-align: left;
+            margin: 0;
+        }
+
+        /* Fila con la imagen gato4 y el nuevo texto al lado */
+        #fila-gato4 {
+            display: flex;
+            align-items: center;
+            gap: 25px;
+            margin-top: 35px;
+        }
+
+        /* Imagen gato4.png */
+        #gato4-imagen {
+            display: block;
+            flex-shrink: 0;
+            width: 280px;
+            max-width: 40%;
+            height: auto;
+            border-radius: 16px;
+            filter: drop-shadow(0 15px 25px rgba(0,0,0,0.35));
+        }
+
+        /* Texto al lado de gato4.png, misma fuente y tamaño que el mensaje principal */
+        #texto-gato4 {
+            font-family: 'Ubuntu', sans-serif;
+            font-size: 21px;
+            line-height: 1.7;
+            color: #4a1020;
+            text-align: left;
+            margin: 0;
+        }
+
+        /* Flechitas de navegación entre caras — texto normal, no emoji, color rosa con contorno blanco */
+        .flecha-nav {
+            display: none;
+            position: fixed;
+            bottom: 35px;
+            font-family: Arial, sans-serif;
+            font-size: 48px;
+            font-weight: bold;
+            color: #ffb3cc;
+            cursor: pointer;
+            z-index: 30;
+            text-shadow: 2px 2px 0 #ffffff, 4px 4px 10px rgba(0,0,0,0.3);
+            transition: transform 0.2s;
+            user-select: none;
+        }
+
+        .flecha-nav:hover {
+            transform: scale(1.15);
+        }
+
+        #flecha-siguiente {
+            right: 35px;
+        }
+
+        #flecha-atras {
+            left: 35px;
+        }
+
+        /* Tarjeta de las flores amarillas, en la Cara 3, mitad izquierda de la pantalla */
+        #tarjeta-flores {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 4%;
+            width: 42%;
+            background: #fdf6e3;
+            border-radius: 26px;
+            padding: 40px 30px;
+            box-sizing: border-box;
+            text-align: center;
+            box-shadow: 0 20px 45px rgba(0,0,0,0.25);
+            z-index: 25;
+            animation: aparecerFlores 0.9s ease-out forwards;
+        }
+
+        #tarjeta-flores h2 {
+            font-family: 'Indie Flower', cursive;
+            font-size: 34px;
+            color: #6b4423;
+            margin: 0 0 8px 0;
+            font-weight: 400;
+        }
+
+        #tarjeta-flores h3 {
+            font-family: 'Indie Flower', cursive;
+            font-size: 26px;
+            color: #a5762f;
+            margin: 0 0 20px 0;
+            font-weight: 400;
+        }
+
+        #tarjeta-flores img {
+            width: 100%;
+            max-width: 320px;
+            height: auto;
+            display: block;
+            margin: 0 auto;
+        }
+
+        /* Bloque del gato informático, arriba a la derecha en la Cara 3, sin tocar la tarjeta de flores */
+        #bloque-gato-info {
+            display: none;
+            position: fixed;
+            top: 6%;
+            right: 5%;
+            width: 34%;
+            text-align: center;
+            z-index: 25;
+            animation: aparecerGatoInfo 0.9s ease-out forwards;
+        }
+
+        #gatoinformatico-imagen {
+            width: 100%;
+            max-width: 300px;
+            height: auto;
+            display: block;
+            margin: 0 auto;
+            border-radius: 16px;
+            filter: drop-shadow(0 15px 25px rgba(0,0,0,0.3));
+        }
+
+        #texto-gato-info {
+            font-family: 'Ubuntu', sans-serif;
+            font-size: 18px;
+            line-height: 1.6;
+            color: #4a1020;
+            margin-top: 20px;
+        }
+
+        /* Contenedor principal para agrupar el gato superior y la caja de login con animación */
+        .login-wrapper {
+            position: relative;
+            margin-top: 80px;
+            z-index: 10;
+            animation: aparecerConRebote 1s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
+
+        /* Estilo para el gatito superior que toca la caja */
+        .gatito-superior {
+            position: absolute;
+            top: -160px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 250px;
+            height: auto;
+            z-index: 15;
+            filter: drop-shadow(0 10px 18px rgba(210, 26, 66, 0.7)); 
+        }
+
+        /* Caja de la contraseña */
+        #login-box {
+            background: #ffb3cc;
+            padding: 40px;
+            padding-top: 50px;
+            border-radius: 16px;
+            box-shadow: 0 15px 50px rgba(210, 26, 66, 0.4); 
+            border: 1px solid #ff80ab;
+            text-align: center;
+        }
+
+        /* Estilo para el título "Para Liseth" */
+        #login-box h2 {
+            color: #d11a42;
+            margin-top: 0;
+            margin-bottom: 25px;
+            font-size: 32px;
+            font-weight: 600;
+            letter-spacing: 1px;
+        }
+
+        /* Contenedor para centrar la barra y el botón juntos */
+        .input-group {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        input[type="password"] {
+            padding: 12px;
+            font-size: 16px;
+            font-family: 'Oswald', sans-serif;
+            border-radius: 8px;
+            border: 1px solid #ff6699;
+            background: #fff0f5;
+            color: #333;
+            outline: none;
+            margin-right: 10px;
+            width: 220px;
+            box-shadow: inset 0 4px 8px rgba(0,0,0,0.1);
+        }
+
+        input[type="password"]:focus {
+            border-color: #d11a42;
+            box-shadow: inset 0 4px 8px rgba(0,0,0,0.1), 0 0 8px rgba(209, 26, 66, 0.5);
+        }
+
+        button {
+            padding: 12px 20px;
+            font-size: 16px;
+            font-family: 'Oswald', sans-serif;
+            border-radius: 8px;
+            border: none;
+            background: #d11a42;
+            color: white;
+            cursor: pointer;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            transition: background 0.2s, box-shadow 0.2s;
+            box-shadow: 0 6px 15px rgba(210, 26, 66, 0.5);
+        }
+
+        button:hover {
+            background: #a81232;
+            box-shadow: 0 8px 20px rgba(210, 26, 66, 0.6);
+        }
+
+        /* Contenido secreto ubicado más a la derecha y casi en el medio vertical */
+        #contenido-secreto {
+            display: none;
+            position: absolute;
+            left: 450px;
+            top: 420px;
+            transform: translate(-50%, -50%); 
+            z-index: 10;
+            animation: aparecerSecreto 1s ease-out forwards;
+        }
+
+        /* Estilo para la imagen amorgatos.png con tamaño de 630px y sombra más notoria */
+        #contenido-secreto img {
+            width: 630px;
+            max-width: 90vw;
+            height: auto;
+            border-radius: 16px;
+            filter: drop-shadow(0 25px 40px rgba(0,0,0,0.55));
+        }
+
+        /* Estilos comunes para las imágenes de las esquinas */
+        .corner-image {
+            position: fixed;
+            height: auto;
+            z-index: 5;
+            animation: aparecerLateral 1.2s ease-out forwards;
+            filter: drop-shadow(0 10px 15px rgba(0,0,0,0.4)); 
+        }
+
+        .huella-superior-izquierda {
+            top: 10px;
+            left: 10px;
+            width: 130px;
+        }
+
+        .corazon-superior-derecha {
+            top: -25px;
+            right: -25px;
+            width: 230px;
+        }
+
+        .gatito-derecha {
+            bottom: 20px;
+            right: 20px;
+            width: 220px;
+        }
+
+        .gatito-izquierda {
+            bottom: 20px;
+            left: 20px;
+            width: 220px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ===== CARA 1: Login (se oculta al entrar) ===== -->
+    <img src="huella1.png" alt="Huella Superior Izquierda" class="corner-image huella-superior-izquierda elemento-login">
+    <img src="corazon.png" alt="Corazón Superior Derecha" class="corner-image corazon-superior-derecha elemento-login">
+
+    <div class="login-wrapper elemento-login">
+        <img src="gato3.png" alt="Gatito Superior" class="gatito-superior">
+        <div id="login-box">
+            <h2>Para Liseth ❤️</h2>
+            <div class="input-group">
+                <input type="password" id="claveInput" placeholder="Contraseña...">
+                <button onclick="verificarClave()">Entrar</button>
+            </div>
+            <p id="error-msg" style="color: #721c24; font-size: 14px; margin-top: 15px; display: none;">Contraseña incorrecta, prueba otra vez.</p>
+        </div>
+    </div>
+
+    <img src="gatoxd.png" alt="Gatito Izquierda" class="corner-image gatito-izquierda elemento-login">
+    <img src="gatito.png" alt="Gatito Derecha" class="corner-image gatito-derecha elemento-login">
+
+    <!-- ===== CARA 2: Contenido principal (oculta hasta poner la contraseña) ===== -->
+    <div id="titulo-princesa" class="cara2-elemento">Mi Princesa</div>
+
+    <div id="bloque-mensaje" class="cara2-elemento">
+        <p id="mensaje-princesa">
+            Amor gracias por estar conmigo, la verdad nunca llegué a amar tanto a alguien como para hacer algo de este tipo. Desde que te conocí más a fondo me pareciste un ángel y una niña con la mala suerte de toparse con personas que fingían ser lo que no son, y desde aquel momento supe que te quise cuidar más que a nadie en el mundo. Ahora me aterra que te sientas mal, llores, o te sientas sola, pero mi vida, no lo estás, corazón, me tienes a mí, aunque no de lado a lado, pero pronto lo estaremos, mi vida, te lo prometo. Mi mayor deseo es cuidar a esa niña tan dulce que tienes en lo más profundo de tu corazón, mi amor. Nunca dudes de mi amor hacia ti, siempre te acompañaré en las buenas y mucho, mucho más en las malas, mi vida.
+        </p>
+        <div id="fila-gato4">
+            <img src="gato4.png" alt="Gato 4" id="gato4-imagen">
+            <p id="texto-gato4">
+                Sé que no te gusta expresar lo que sientes en lo más profundo de tu corazón, pero ahora me tienes a mí, amor. Soy consciente de que te esfuerzas luchando con tus pensamientos, de cuántos daños pasaste y que aún sueles pasar, y me duele en el alma, pero no tienes que hacerlo sola, cariño. Siempre estaré en tu vida para escucharte y amarte.
+            </p>
+        </div>
+    </div>
+
+    <div id="contenido-secreto" class="cara2-elemento">
+        <img src="amorgatos.png" alt="Amor Gatos">
+    </div>
+
+    <!-- Flecha para ir a la Cara 3 (aparece solo en la Cara 2) -->
+    <div id="flecha-siguiente" class="flecha-nav cara2-elemento" onclick="irCara3()">&#8594;</div>
+
+    <!-- ===== CARA 3: Tarjeta de flores amarillas (izquierda) + gato informático con texto (derecha) ===== -->
+    <div id="tarjeta-flores" class="cara3-elemento">
+        <h2>¡Aquí están tus flores amarillas!</h2>
+        <h3>Mi niña</h3>
+        <img src="flores.png" alt="Ramo de flores amarillas">
+    </div>
+
+    <div id="bloque-gato-info" class="cara3-elemento">
+        <img src="gatoinformatico.png" alt="Gato Informático" id="gatoinformatico-imagen">
+        <p id="texto-gato-info">
+            Puta madre, de verdad me duele no darte las flores en persona, mi vida, y ven mis suegros cuánto te amo y que daría mi vida por ti XD. Y no vi mejor manera de darte algo, que esta, la verdad, si no, hace rato en persona 2 toneladas de flores tendrías XDD. TE AMO MI BEBÉ.
+        </p>
+    </div>
+
+    <!-- Flecha para volver a la Cara 2 (aparece solo en la Cara 3) -->
+    <div id="flecha-atras" class="flecha-nav" onclick="irCara2()">&#8592;</div>
+
+    <script>
+        function verificarClave() {
+            const passwordSecreta = "cr7"; 
+            const valorEscrito = document.getElementById("claveInput").value;
+
+            if (valorEscrito === passwordSecreta) {
+                // Ocultamos la caja de login y los adornos de las esquinas
+                const elementosLogin = document.querySelectorAll(".elemento-login");
+                elementosLogin.forEach(el => el.style.display = "none");
+
+                // Mostramos todos los elementos de la Cara 2 (título, mensaje, imagen y flecha siguiente)
+                document.querySelectorAll(".cara2-elemento").forEach(el => {
+                    if (el.id === "flecha-siguiente") {
+                        el.style.display = "flex";
+                    } else {
+                        el.style.display = "block";
+                    }
+                });
+            } else {
+                document.getElementById("error-msg").style.display = "block";
+            }
+        }
+
+        // Ir de la Cara 2 a la Cara 3 (fondo con puntos + tarjeta de flores + gato informático)
+        function irCara3() {
+            document.querySelectorAll(".cara2-elemento").forEach(el => {
+                el.style.display = "none";
+            });
+            document.getElementById("flecha-atras").style.display = "flex";
+            document.querySelectorAll(".cara3-elemento").forEach(el => {
+                el.style.display = "block";
+            });
+        }
+
+        // Volver de la Cara 3 a la Cara 2
+        function irCara2() {
+            document.getElementById("flecha-atras").style.display = "none";
+            document.querySelectorAll(".cara3-elemento").forEach(el => {
+                el.style.display = "none";
+            });
+            document.querySelectorAll(".cara2-elemento").forEach(el => {
+                if (el.id === "flecha-siguiente") {
+                    el.style.display = "flex";
+                } else {
+                    el.style.display = "block";
+                }
+            });
+        }
+    </script>
+
+</body>
+</html>
